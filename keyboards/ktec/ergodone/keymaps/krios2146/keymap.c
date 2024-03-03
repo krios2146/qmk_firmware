@@ -2,98 +2,56 @@
 #include "version.h"
 
 #define BASE 0 // default layer
-#define KRIOS2146 1 // krios2146 layer
-#define SYMB 2 // symbols layer
+#define SYMB 1 // symbols layer
 
 enum custom_keycodes {
   VRSN = SAFE_RANGE,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-/* Keymap 0: Basic layer
+/* Keymap 0: base layer
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
- * |   =    |   1  |   2  |   3  |   4  |   5  | LEFT |           | RIGHT|   6  |   7  |   8  |   9  |   0  |   -    |
- * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
- * | Del    |   Q  |   W  |   E  |   R  |   T  | Layer|           |  L1  |   Y  |   U  |   I  |   O  |   P  |   \    |
- * |--------+------+------+------+------+------| KRIOS|           |      |------+------+------+------+------+--------|
- * | BkSp   |   A  |   S  |   D  |   F  |   G  |------|           |------|   H  |   J  |   K  |   L  |; / L2|' / Cmd |
- * |--------+------+------+------+------+------| Layer|           | Meh  |------+------+------+------+------+--------|
- * | LShift |Z/Ctrl|   X  |   C  |   V  |   B  | SYMB |           |      |   N  |   M  |   ,  |   .  |//Ctrl| RShift |
- * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   |Grv/L1|  '"  |AltShf| Left | Right|                                       |  Up  | Down |   [  |   ]  | ~L1  |
- *   `----------------------------------'                                       `----------------------------------'
- *                                        ,-------------.       ,-------------.
- *                                        | App  | LGui |       | Alt  |Ctrl/Esc|
- *                                 ,------|------|------|       |------+--------+------.
- *                                 |      |      | Home |       | PgUp |        |      |
- *                                 | Space|Backsp|------|       |------|  Tab   |Enter |
- *                                 |      |ace   | End  |       | PgDn |        |      |
- *                                 `--------------------'       `----------------------'
- */
-[BASE] = LAYOUT_ergodox(
-        // left hand
-        KC_EQL,         KC_1,         KC_2,   KC_3,   KC_4,   KC_5,   KC_LEFT,
-        KC_DEL,         KC_Q,         KC_W,   KC_E,   KC_R,   KC_T,   TG(KRIOS2146),
-        KC_BSPC,        KC_A,         KC_S,   KC_D,   KC_F,   KC_G,
-        KC_LSFT,        CTL_T(KC_Z),  KC_X,   KC_C,   KC_V,   KC_B,   TG(SYMB),
-        LT(KRIOS2146,KC_GRV),KC_QUOT,      LALT(KC_LSFT),  KC_LEFT,KC_RGHT,
-                                              ALT_T(KC_APP),  KC_LGUI,
-                                                              KC_HOME,
-                                               KC_SPC,KC_BSPC,KC_END,
-        // right hand
-         KC_RGHT,     KC_6,   KC_7,  KC_8,   KC_9,   KC_0,             KC_MINS,
-         TG(KRIOS2146),    KC_Y,   KC_U,  KC_I,   KC_O,   KC_P,             KC_BSLS,
-                      KC_H,   KC_J,  KC_K,   KC_L,   LT(SYMB, KC_SCLN),GUI_T(KC_QUOT),
-         MEH_T(KC_NO),KC_N,   KC_M,  KC_COMM,KC_DOT, CTL_T(KC_SLSH),   KC_RSFT,
-                              KC_UP, KC_DOWN,KC_LBRC,KC_RBRC,          TT(KRIOS2146),
-         KC_LALT,        CTL_T(KC_ESC),
-         KC_PGUP,
-         KC_PGDN,KC_TAB, KC_ENT
-    ),
-/* Keymap 1: krios2146 layer
- *
- * ,--------------------------------------------------.           ,--------------------------------------------------.
- * |   Esc  |   1  |   2  |   3  |   4  |   5  |  \   |           |  -_  |   6  |   7  |   8  |   9  |   0  |  Back  |
+ * |   Esc  |   1  |   2  |   3  |   4  |   5  |  \   |           |  -_  |   6  |   7  |   8  |   9  |   0  | Delete |
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
  * |  Tab   |   Q  |   W  |   E  |   R  |   T  | Layer|           |  {   |   Y  |   U  |   I  |   O  |   P  |   -_   |
- * |--------+------+------+------+------+------| KRIOS|           |  [   |------+------+------+------+------+--------|
+ * |--------+------+------+------+------+------| SYMB |           |  [   |------+------+------+------+------+--------|
  * |  Caps  |   A  |   S  |   D  |   F  |   G  |------|           |------|   H  |   J  |   K  |   L  |  :;  |   =+   |
- * |--------+------+------+------+------+------| Layer|           |  }   |------+------+------+------+------+--------|
- * | LShift |   Z  |   X  |   C  |   V  |   B  | SYMB |           |  ]   |   N  |   M  |  <,  |  >.  |  /?  |        |
+ * |--------+------+------+------+------+------|      |           |  }   |------+------+------+------+------+--------|
+ * | LShift |   Z  |   X  |   C  |   V  |   B  |      |           |  ]   |   N  |   M  |  <,  |  >.  |  /?  |  F11   |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   | Ctrl |  Win | Left | Right|  Alt |                                       |  "'  |  Up  | Down |      |      |
+ *   | Ctrl |  Win | Left | Right|  Alt |                                       |  "'  |  Up  | Down |      |  F5  |
  *   `----------------------------------'                                       `----------------------------------'
  *                                        ,-------------.       ,-------------.
  *                                        |      |Print |       | `~   | Ins  |
  *                                 ,------|------|------|       |------+--------+------.
- *                                 |      | IDEA | Home |       | PgUp |        |      |
- *                                 | Enter| Auto |------|       |------| Delete |Space |
- *                                 |      | Cmp  | End  |       | PgDn |        |      |
+ *                                 |      |      | Home |       | PgUp |        |      |
+ *                                 | Space| Back |------|       |------|  Enter | Space|
+ *                                 |      |      | End  |       | PgDn |        |      |
  *                                 `--------------------'       `----------------------'
  */
-[KRIOS2146] = LAYOUT_ergodox(
+[BASE] = LAYOUT_ergodox(
         // left hand
         KC_ESCAPE,      KC_1,         KC_2,      KC_3,     KC_4,         KC_5,       KC_BACKSLASH,
-        KC_TAB,         KC_Q,         KC_W,      KC_E,     KC_R,         KC_T,       TG(KRIOS2146),
+        KC_TAB,         KC_Q,         KC_W,      KC_E,     KC_R,         KC_T,       TG(SYMB),
         KC_CAPS_LOCK,   KC_A,         KC_S,      KC_D,     KC_F,         KC_G,
-        KC_LEFT_SHIFT,  KC_Z,         KC_X,      KC_C,     KC_V,         KC_B,       TG(SYMB),
+        KC_LEFT_SHIFT,  KC_Z,         KC_X,      KC_C,     KC_V,         KC_B,       KC_NO,
         KC_LEFT_CTRL,   KC_LEFT_GUI,  KC_LEFT,   KC_RGHT,  KC_LEFT_ALT,
 
-                                                 KC_NO,                 KC_PRINT_SCREEN,
-                                                                        KC_HOME,
-                                      KC_ENTER,  LCTL(LSFT(KC_ENTER)),  KC_END,
+                                                 KC_NO,         KC_PRINT_SCREEN,
+                                                                KC_HOME,
+                                      KC_SPACE,  KC_BACKSPACE,  KC_END,
 
         // right hand
-        KC_MINUS,           KC_6,  KC_7,      KC_8,      KC_9,     KC_0,          KC_BACKSPACE,
+        KC_MINUS,           KC_6,  KC_7,      KC_8,      KC_9,     KC_0,          KC_DELETE,
         KC_LEFT_BRACKET,    KC_Y,  KC_U,      KC_I,      KC_O,     KC_P,          KC_MINUS,
                             KC_H,  KC_J,      KC_K,      KC_L,     KC_SEMICOLON,  KC_EQUAL,
-        KC_RIGHT_BRACKET,   KC_N,  KC_M,      KC_COMMA,  KC_DOT,   KC_SLASH,      KC_NO,
-                                   KC_QUOTE,  KC_UP,     KC_DOWN,  KC_NO,         KC_NO,
+        KC_RIGHT_BRACKET,   KC_N,  KC_M,      KC_COMMA,  KC_DOT,   KC_SLASH,      KC_F11,
+                                   KC_QUOTE,  KC_UP,     KC_DOWN,  KC_NO,         KC_F5,
 
         KC_GRAVE,           KC_INSERT,
         KC_PGUP,
-        KC_PGDN,            KC_DELETE,  KC_SPACE
+        KC_PGDN,            KC_ENTER,  KC_SPACE
 ),
 /* Keymap 2: Symbol Layer
  *
