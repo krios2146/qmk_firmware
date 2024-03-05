@@ -8,18 +8,6 @@ enum custom_keycodes {
   VRSN = SAFE_RANGE,
 };
 
-const uint16_t PROGMEM alt_j_down[] = {KC_LEFT_ALT, KC_J, COMBO_END};
-const uint16_t PROGMEM alt_k_up[] = {KC_LEFT_ALT, KC_K, COMBO_END};
-const uint16_t PROGMEM alt_h_left[] = {KC_LEFT_ALT, KC_H, COMBO_END};
-const uint16_t PROGMEM alt_l_right[] = {KC_LEFT_ALT, KC_L, COMBO_END};
-
-combo_t key_combos[] = {
-    COMBO(alt_j_down, KC_DOWN),
-    COMBO(alt_k_up, KC_UP),
-    COMBO(alt_h_left, KC_LEFT),
-    COMBO(alt_l_right, KC_RIGHT),
-};
-
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 0: base layer
  *
@@ -115,6 +103,46 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         SEND_STRING (QMK_KEYBOARD "/" QMK_KEYMAP " @ " QMK_VERSION);
       }
       return false;
+
+    case KC_J:
+      if (record->event.pressed) {
+        if (get_mods() & MOD_MASK_ALT) {
+            unregister_code(KC_LEFT_ALT);
+            tap_code(KC_DOWN);
+            register_code(KC_LEFT_ALT);
+            return false;
+        }
+      }
+
+    case KC_K:
+      if (record->event.pressed) {
+        if (get_mods() & MOD_MASK_ALT) {
+            unregister_code(KC_LEFT_ALT);
+            tap_code(KC_UP);
+            register_code(KC_LEFT_ALT);
+            return false;
+        }
+      }
+
+    case KC_H:
+      if (record->event.pressed) {
+        if (get_mods() & MOD_MASK_ALT) {
+            unregister_code(KC_LEFT_ALT);
+            tap_code(KC_LEFT);
+            register_code(KC_LEFT_ALT);
+            return false;
+        }
+      }
+
+    case KC_L:
+      if (record->event.pressed) {
+        if (get_mods() & MOD_MASK_ALT) {
+            unregister_code(KC_LEFT_ALT);
+            tap_code(KC_RIGHT);
+            register_code(KC_LEFT_ALT);
+            return false;
+        }
+      }
   }
   return true;
 }
