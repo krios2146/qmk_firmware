@@ -26,7 +26,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                        |      |Print |       | `~   | Ins  |
  *                                 ,------|------|------|       |------+--------+------.
  *                                 |      |      | Home |       | PgUp |        |      |
- *                                 | Space| Back |------|       |------|  Enter | Space|
+ *                                 | Back | Space|------|       |------|  Enter | Space|
  *                                 |      |      | End  |       | PgDn |        |      |
  *                                 `--------------------'       `----------------------'
  */
@@ -40,7 +40,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                                                  KC_NO,         KC_PRINT_SCREEN,
                                                                 KC_HOME,
-                                      KC_SPACE,  KC_BACKSPACE,  KC_END,
+                                      KC_BACKSPACE,  KC_SPACE,  KC_END,
 
         // right hand
         KC_MINUS,           KC_6,  KC_7,      KC_8,      KC_9,     KC_0,          KC_DELETE,
