@@ -8,6 +8,14 @@ enum custom_keycodes {
   VRSN = SAFE_RANGE,
 };
 
+enum {
+    TD_ESC_GRV
+};
+
+tap_dance_action_t tap_dance_actions[] = {
+    [TD_ESC_GRV] = ACTION_TAP_DANCE_DOUBLE(KC_ESC, KC_GRAVE),
+};
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 0: base layer
  *
@@ -32,7 +40,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [BASE] = LAYOUT_ergodox(
         // left hand
-        ACTION_TAP_DANCE_DOUBLE(KC_ESCAPE, KC_GRAVE),      KC_1,         KC_2,      KC_3,     KC_4,         KC_5,       KC_BACKSLASH,
+        TD(TD_ESC_GRV),      KC_1,         KC_2,      KC_3,     KC_4,         KC_5,       KC_BACKSLASH,
         KC_TAB,         KC_Q,         KC_W,      KC_E,     KC_R,         KC_T,       TG(SYMB),
         KC_CAPS_LOCK,   KC_A,         KC_S,      KC_D,     KC_F,         KC_G,
         KC_LEFT_SHIFT,  KC_Z,         KC_X,      KC_C,     KC_V,         KC_B,       KC_NO,
