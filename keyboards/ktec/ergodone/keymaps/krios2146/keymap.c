@@ -4,8 +4,9 @@
 #define BASE 0 // default layer
 #define SYMB 1 // symbols layer
 
-enum {
-    TD_ESC_GRV
+enum custom_keycodes {
+    COPY = SAFE_RANGE,
+    PASTE
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -14,16 +15,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,--------------------------------------------------.           ,--------------------------------------------------.
  * |  Esc   |   1  |   2  |   3  |   4  |   5  |      |           |      |   6  |   7  |   8  |   9  |   0  |  Grv   |
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
- * |  Tab   |   Q  |   W  |   E  |   R  |   T  | Layer|           |      |   Y  |   U  |   I  |   O  |   P  |   -_   |
- * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
+ * |  Tab   |   Q  |   W  |   E  |   R  |   T  | Layer|           |  [   |   Y  |   U  |   I  |   O  |   P  |   -_   |
+ * |--------+------+------+------+------+------|      |           |  {   |------+------+------+------+------+--------|
  * |Capsword|   A  |   S  |   D  |   F  |   G  |------|           |------|   H  |   J  |   K  |   L  |  :;  |   =+   |
- * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * | LShift | Z<C> |   X  |   C  |   V  |   B  |      |           |      |   N  |   M  |  <,  | >.<C>| /?<S>|   \|   |
+ * |--------+------+------+------+------+------|      |           |  ]   |------+------+------+------+------+--------|
+ * | LShift | Z<C> |   X  |   C  |   V  |   B  |      |           |  }   |   N  |   M  |  <,  | >.<C>| /?<S>|   \|   |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
  *   | Lyr  |  Win |      |      |  Alt |                                       |  "'  |      |      |  Lyr |      |
  *   `----------------------------------'                                       `----------------------------------'
  *                                        ,-------------.       ,---------------.
- *                                        | Copy |Print |       |      | Paste  |
+ *                                        | Copy |Print |       |  Ins | Paste  |
  *                                 ,------|------|------|       |------+--------+------.
  *                                 |      |      | Home |       | PgUp |        |      |
  *                                 | Back |Delete|------|       |------|  Enter | Space|
@@ -32,26 +33,26 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [BASE] = LAYOUT_ergodox(
         // Left hand
-        KC_ESC,    KC_1,          KC_2,   KC_3,   KC_4,     KC_5,     KC_BACKSLASH,
-        KC_TAB,    KC_Q,          KC_W,   KC_E,   KC_R,     KC_T,     TG(SYMB),
-        KC_SPC,    KC_A,          KC_S,   KC_D,   KC_F,     KC_G,
-        KC_LSFT,   LCTL_T(KC_Z),  KC_X,   KC_C,   KC_V,     KC_B,     KC_NO,
+        KC_ESC,    KC_1,          KC_2,   KC_3,   KC_4,     KC_5,    KC_NO,
+        KC_TAB,    KC_Q,          KC_W,   KC_E,   KC_R,     KC_T,    TG(SYMB),
+        CW_TOGG,   KC_A,          KC_S,   KC_D,   KC_F,     KC_G,
+        KC_LSFT,   LCTL_T(KC_Z),  KC_X,   KC_C,   KC_V,     KC_B,    KC_NO,
         TT(SYMB),  KC_LEFT_GUI,   KC_NO,  KC_NO,  KC_LALT,
 
                                                             // Thumb cluster
-                                                            KC_COPY,  KC_PRINT_SCREEN,
-                                                                      KC_HOME,
-                                                  KC_BSPC,  KC_DEL,   KC_END,
+                                                            COPY,    KC_PRINT_SCREEN,
+                                                                     KC_HOME,
+                                                  KC_BSPC,  KC_DEL,  KC_END,
 
         // Right hand
         KC_NO,    KC_6,      KC_7,      KC_8,     KC_9,            KC_0,              KC_GRV,
         KC_LBRC,  KC_Y,      KC_U,      KC_I,     KC_O,            KC_P,              KC_MINS,
                   KC_H,      KC_J,      KC_K,     KC_L,            KC_SCLN,           KC_EQL,
-        KC_RBRC,  KC_N,      KC_M,      KC_COMM,  RCTL_T(KC_DOT),  RSFT_T(KC_SLASH),  KC_BSLS,
+        KC_RBRC,  KC_N,      KC_M,      KC_COMM,  LCTL_T(KC_DOT),  RSFT_T(KC_SLASH),  KC_BSLS,
                              KC_QUOTE,  KC_NO,    KC_NO,           TT(SYMB),          KC_NO,
 
         // Thumb cluster
-        KC_NO,    KC_PASTE,
+        KC_INS,   PASTE,
         KC_PGUP,
         KC_PGDN,  KC_ENT,    KC_SPC
 ),
@@ -104,6 +105,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
+    // Ctrl - Ins
+    case COPY:
+      if (record->event.pressed) {
+        register_code(KC_LEFT_CTRL);
+        tap_code(KC_INSERT);
+        unregister_code(KC_LEFT_CTRL);
+        return false;
+      }
+
+    // Shift - Ins
+    case PASTE:
+      if (record->event.pressed) {
+        register_code(KC_LEFT_SHIFT);
+        tap_code(KC_INSERT);
+        unregister_code(KC_LEFT_SHIFT);
+        return false;
+      }
+
+    // Alt - J = Down
     case KC_J:
       if (record->event.pressed) {
         if (get_mods() & MOD_MASK_ALT) {
@@ -114,6 +134,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
       }
 
+    // Alt - K = Up
     case KC_K:
       if (record->event.pressed) {
         if (get_mods() & MOD_MASK_ALT) {
@@ -124,6 +145,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
       }
 
+    // Alt - H = Left
     case KC_H:
       if (record->event.pressed) {
         if (get_mods() & MOD_MASK_ALT) {
@@ -134,6 +156,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
       }
 
+    // Alt - L = Right
     case KC_L:
       if (record->event.pressed) {
         if (get_mods() & MOD_MASK_ALT) {
