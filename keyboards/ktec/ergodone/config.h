@@ -7,4 +7,4 @@
 #define MATRIX_ROWS 6
 #define MATRIX_COLS 14
 
-#define TAPPING_TERM 150
+#define TAPPING_TERM 100
