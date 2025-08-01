@@ -9,6 +9,12 @@ enum custom_keycodes {
     PASTE
 };
 
+const uint16_t PROGMEM fj_menu[] = {KC_F, KC_J, COMBO_END};
+
+combo_t key_combos[] = {
+    COMBO(fj_menu, KC_APP),
+};
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 0: base layer
  *
@@ -61,11 +67,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ┌────────┬─────┬─────┬─────┬─────┬─────┬─────┐       ┌─────┬─────┬─────┬─────┬─────┬─────┬────────┐
  * │        │ F1  │ F2  │ F3  │ F4  │ F5  │     │       │     │ F6  │ F7  │ F8  │ F9  │ F10 │  F11   │
  * ├────────┼─────┼─────┼─────┼─────┼─────┼─────┤       ├─────┼─────┼─────┼─────┼─────┼─────┼────────┤
- * │        │  ~  │  `  │  {  │  }  │  $  │BASE │       │     │     │  7  │  8  │  9  │  0  │  F12   │
+ * │        │  `  │  ~  │  {  │  }  │     │BASE │       │     │     │  7  │  8  │  9  │  0  │  F12   │
  * ├────────┼─────┼─────┼─────┼─────┼─────│Layer│       │     ├─────┼─────┼─────┼─────┼─────┼────────┤
  * │        │  @  │  %  │  (  │  )  │  &  ├─────┤       ├─────┤  |  │  4  │  5  │  6  │  *  │        │
  * ├────────┼─────┼─────┼─────┼─────┼─────┤     │       │     ├─────┼─────┼─────┼─────┼─────┼────────┤
- * │        │  #  │  ^  │  [  │  ]  │  !  │     │       │     │     │  1  │  2  │  3  │  \  │        │
+ * │        │  #  │     │  [  │  ]  │  !  │     │       │     │     │  1  │  2  │  3  │  \  │        │
  * └─┬──────┼─────┼─────┼─────┼─────┼─────┴─────┘       └─────┴─────┼─────┼─────┼─────┼─────┼──────┬─┘
  *   │      │     │     │     │     │                               │     │     │     │     │      │
  *   └──────┴─────┴─────┴─────┴─────┘                               └─────┴─────┴─────┴─────┴──────┘
@@ -73,14 +79,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                  │     │     │       │     │     │
  *                            ┌─────┼─────┼─────│       ├─────┼─────┼─────┐
  *                            │     │     │     │       │     │     │     │
- *                            │     │     ├─────┤       ├─────┤     │     │
+ *                            │   ^ │     ├─────┤       ├─────┤     │  $  │
  *                            │     │     │     │       │     │     │     │
  *                            └─────┴─────┴─────┘       └─────┴─────┴─────┘
  */
 [SYMB] = LAYOUT_ergodox(
        // Left hand
        KC_NO,    KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_TRNS,
-       KC_TRNS,  KC_TILD,  KC_GRV,   KC_LCBR,  KC_RCBR,  KC_DLR,   TG(SYMB),
+       KC_TRNS,  KC_GRV,   KC_TILD,  KC_LCBR,  KC_RCBR,  KC_DLR,   TG(SYMB),
        KC_TRNS,  KC_AT,    KC_PERC,  KC_LPRN,  KC_RPRN,  KC_AMPR,
        KC_TRNS,  KC_HASH,  KC_CIRC,  KC_LBRC,  KC_RBRC,  KC_EXLM,  KC_TRNS,
        KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
@@ -104,8 +110,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  uint8_t mod_state = get_mods();
-
   switch (keycode) {
     // Ctrl - Ins
     case COPY:
@@ -125,52 +129,48 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
       }
 
+    // Alt - J = Down
     case KC_J:
-      if (mod_state & MOD_MASK_ALT) {
-        if (record->event.pressed) {
-          del_mods(MOD_MASK_ALT);
-          register_code(KC_DOWN);
-          set_mods(mod_state);
-        } else {
-          unregister_code(KC_DOWN);
+      if (record->event.pressed) {
+        if (get_mods() & MOD_MASK_ALT) {
+            unregister_code(KC_LEFT_ALT);
+            tap_code(KC_DOWN);
+            register_code(KC_LEFT_ALT);
+            return false;
         }
-        return false;
       }
 
+    // Alt - K = Up
     case KC_K:
-      if (mod_state & MOD_MASK_ALT) {
-        if (record->event.pressed) {
-          del_mods(MOD_MASK_ALT);
-          register_code(KC_UP);
-          set_mods(mod_state);
-        } else {
-          unregister_code(KC_UP);
+      if (record->event.pressed) {
+        if (get_mods() & MOD_MASK_ALT) {
+            unregister_code(KC_LEFT_ALT);
+            tap_code(KC_UP);
+            register_code(KC_LEFT_ALT);
+            return false;
         }
-        return false;
       }
 
+    // Alt - H = Left
     case KC_H:
-      if (mod_state & MOD_MASK_ALT) {
-        if (record->event.pressed) {
-          del_mods(MOD_MASK_ALT);
-          register_code(KC_LEFT);
-          set_mods(mod_state);
-        } else {
-          unregister_code(KC_LEFT);
+      if (record->event.pressed) {
+        if (get_mods() & MOD_MASK_ALT) {
+            unregister_code(KC_LEFT_ALT);
+            tap_code(KC_LEFT);
+            register_code(KC_LEFT_ALT);
+            return false;
         }
-        return false;
       }
 
+    // Alt - L = Right
     case KC_L:
-      if (mod_state & MOD_MASK_ALT) {
-        if (record->event.pressed) {
-          del_mods(MOD_MASK_ALT);
-          register_code(KC_RIGHT);
-          set_mods(mod_state);
-        } else {
-          unregister_code(KC_RIGHT);
+      if (record->event.pressed) {
+        if (get_mods() & MOD_MASK_ALT) {
+            unregister_code(KC_LEFT_ALT);
+            tap_code(KC_RIGHT);
+            register_code(KC_LEFT_ALT);
+            return false;
         }
-        return false;
       }
   }
   return true;
