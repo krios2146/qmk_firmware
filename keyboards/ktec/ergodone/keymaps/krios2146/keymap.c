@@ -69,7 +69,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ├────────┼─────┼─────┼─────┼─────┼─────┼─────┤       ├─────┼─────┼─────┼─────┼─────┼─────┼────────┤
  * │        │  `  │  ~  │  {  │  }  │     │BASE │       │     │     │  7  │  8  │  9  │  0  │  F12   │
  * ├────────┼─────┼─────┼─────┼─────┼─────│Layer│       │     ├─────┼─────┼─────┼─────┼─────┼────────┤
- * │        │  @  │  %  │  (  │  )  │  &  ├─────┤       ├─────┤  |  │  4  │  5  │  6  │  *  │        │
+ * │        │  @  │  %  │  (  │  )  │  &  ├─────┤       ├─────┤  |  │  4  │  5  │  6  │  *  │ LED_TG │
  * ├────────┼─────┼─────┼─────┼─────┼─────┤     │       │     ├─────┼─────┼─────┼─────┼─────┼────────┤
  * │        │  #  │     │  [  │  ]  │  !  │     │       │     │     │  1  │  2  │  3  │  \  │        │
  * └─┬──────┼─────┼─────┼─────┼─────┼─────┴─────┘       └─────┴─────┼─────┼─────┼─────┼─────┼──────┬─┘
@@ -180,25 +180,3 @@ bool led_update_user(led_t led_state) {
     // stub any kb level behaviour
     return false;
 }
-
-// Runs constantly in the background, in a loop.
-void matrix_scan_user(void) {
-    ergodox_board_led_off();
-    ergodox_right_led_1_off();
-    ergodox_right_led_2_off();
-    ergodox_right_led_3_off();
-
-    switch (get_highest_layer(layer_state)) {
-      // TODO: Make this relevant to the ErgoDox EZ.
-        case 1:
-            ergodox_right_led_1_on();
-            break;
-        case 2:
-            ergodox_right_led_2_on();
-            break;
-        default:
-            // none
-            break;
-    }
-
-};
