@@ -4,6 +4,7 @@
 #define BASE 0
 #define GAME 1
 #define SYMB 2
+#define ARRW 3
 
 enum custom_keycodes {
     COPY = SAFE_RANGE,
@@ -44,7 +45,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,    KC_Q,          KC_W,   KC_E,   KC_R,     KC_T,    TG(GAME),
         CW_TOGG,   KC_A,          KC_S,   KC_D,   KC_F,     KC_G,
         KC_LSFT,   LCTL_T(KC_Z),  KC_X,   KC_C,   KC_V,     KC_B,    KC_NO,
-        TT(SYMB),  KC_LEFT_GUI,   KC_NO,  KC_NO,  KC_LALT,
+        TT(SYMB),  KC_LEFT_GUI,   KC_NO,  TT(ARRW),  KC_LALT,
 
                                                             // Thumb cluster
                                                             COPY,    KC_PRINT_SCREEN,
@@ -90,7 +91,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,    KC_Q,          KC_W,   KC_E,   KC_R,     KC_T,    TG(GAME),
         KC_CAPS,   KC_A,          KC_S,   KC_D,   KC_F,     KC_G,
         KC_LSFT,   LCTL_T(KC_Z),  KC_X,   KC_C,   KC_V,     KC_B,    KC_NO,
-        TT(SYMB),  KC_LEFT_GUI,   KC_NO,  KC_NO,  KC_LALT,
+        TT(SYMB),  KC_LEFT_GUI,   KC_NO,  TT(ARRW),  KC_LALT,
 
                                                             // Thumb cluster
                                                             COPY,    KC_PRINT_SCREEN,
@@ -153,6 +154,51 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        KC_TRNS,  KC_TRNS,
        KC_TRNS,
        KC_TRNS,  KC_NO,    KC_TRNS
+),
+/* Keymap 3: Arrow Layer
+ *
+ * ┌────────┬─────┬─────┬─────┬─────┬─────┬─────┐       ┌─────┬─────┬─────┬─────┬─────┬─────┬────────┐
+ * │        │     │     │     │     │     │     │       │     │     │     │     │     │     │        │
+ * ├────────┼─────┼─────┼─────┼─────┼─────┼─────┤       ├─────┼─────┼─────┼─────┼─────┼─────┼────────┤
+ * │        │     │     │     │     │     │     │       │     │     │     │     │     │     │        │
+ * ├────────┼─────┼─────┼─────┼─────│     │     │       │     ├─────┼─────┼─────┼─────┼─────┼────────┤
+ * │        │     │     │     │     │     ├─────┤       ├─────┤ <-  │  ↓  │  ↑  │ ->  │     │        │
+ * ├────────┼─────┼─────┼─────┼─────┼─────┤     │       │     ├─────┼─────┼─────┼─────┼─────┼────────┤
+ * │        │     │     │     │     │     │     │       │     │     │     │     │     │     │        │
+ * └─┬──────┼─────┼─────┼─────┼─────┼─────┴─────┘       └─────┴─────┼─────┼─────┼─────┼─────┼──────┬─┘
+ *   │      │     │     │     │     │                               │     │     │     │     │      │
+ *   └──────┴─────┴─────┴─────┴─────┘                               └─────┴─────┴─────┴─────┴──────┘
+ *                                  ┌─────┬─────┐       ┌─────┬─────┐
+ *                                  │     │     │       │     │     │
+ *                            ┌─────┼─────┼─────│       ├─────┼─────┼─────┐
+ *                            │     │     │     │       │     │     │     │
+ *                            │     │     ├─────┤       ├─────┤     │     │
+ *                            │     │     │     │       │     │     │     │
+ *                            └─────┴─────┴─────┘       └─────┴─────┴─────┘
+ */
+[ARRW] = LAYOUT_ergodox(
+       // Left hand
+       KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
+       KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
+       KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
+       KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
+       KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
+
+                                                         // Thumb cluster
+                                                         KC_TRNS,  KC_TRNS,
+                                                                   KC_TRNS,
+                                               KC_TRNS,  KC_TRNS,  KC_TRNS,
+       // Right hand
+       KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
+       KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
+                 KC_LEFT,  KC_DOWN,  KC_UP,    KC_RIGHT, KC_TRNS,  KC_TRNS,
+       KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
+       KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
+
+       // Thumb cluster
+       KC_TRNS,  KC_TRNS,
+       KC_TRNS,
+       KC_TRNS,  KC_TRNS,  KC_TRNS
 ),
 };
 
